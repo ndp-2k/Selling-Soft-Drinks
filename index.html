@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Đăng nhập</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <div class="container-fluid">
+        <div class="row justify-content-center align-items-center vh-100">
+            <div class="col-12 text-center mb-4">
+            </div>
+            <div class="col-md-6 col-lg-4">
+                <div class="card bg-dark text-white border-0">
+                    <div class="card-body p-5">
+                        <h4 class="card-title text-center mb-4" id="form-title">Đăng nhập</h4>
+                        <form id="loginForm">
+                            <div class="form-group">
+                                <label for="phone">Số điện thoại</label>
+                                <input type="tel" class="form-control" id="phone" placeholder="Nhập số điện thoại"
+                                    required>
+                            </div>
+                            <div class="form-group">
+                                <label for="password">Mật khẩu</label>
+                                <input type="password" class="form-control" id="password" placeholder="Mật khẩu"
+                                    required>
+                            </div>
+                            <div class="form-check mb-3" id="rememberMeSection">
+                                <input type="checkbox" class="form-check-input" id="rememberMe">
+                                <label class="form-check-label" for="rememberMe">Ghi nhớ đăng nhập</label>
+                                <a href="#" class="float-right text-muted">Quên mật khẩu?</a>
+                            </div>
+                            <button type="submit" class="btn btn-primary btn-block" id="submitButton">Đăng nhập</button>
+                            <div class="text-center mt-3">
+                                <span id="toggleFormText">Chưa có tài khoản? <a href="#" class="text-primary"
+                                        id="toggleFormLink">Đăng ký</a></span>
+                            </div>
+                        </form>
+                        <form id="registerForm" style="display: none;">
+                            <div class="form-group">
+                                <label for="reg-phone">Số điện thoại</label>
+                                <input type="tel" class="form-control" id="reg-phone" placeholder="Nhập số điện thoại"
+                                    required>
+                            </div>
+                            <div class="form-group">
+                                <label for="reg-password">Mật khẩu</label>
+                                <input type="password" class="form-control" id="reg-password" placeholder="Mật khẩu"
+                                    required>
+                            </div>
+                            <button type="submit" class="btn btn-primary btn-block" id="registerButton">Đăng ký</button>
+                            <div class="text-center mt-3">
+                                <span id="toggleFormText">Đã có tài khoản? <a href="#" class="text-primary"
+                                        id="toggleFormLink">Đăng nhập</a></span>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="login.js"></script>
+</body>
+
+</html>
