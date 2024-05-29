@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TocoToco Tea Order</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <header class="bg-light p-3">
+        <div class="container">
+            <div class="d-flex justify-content-between align-items-center">
+                <a href="#" class="navbar-brand">
+                    <img src="logo.png" alt="TocoToco Tea" height="50">
+                </a>
+                <ul class="navbar-nav ml-auto"> <!-- Corrected class name here -->
+                    <li class="nav-item">
+                        <a class="nav-link" href="index.html">Home</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </header>
+
+    <div class="container mt-4">
+        <div class="row justify-content-center mb-4">
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Thêm Sản Phẩm Mới</h5>
+                        <form id="addProductForm">
+                            <div class="form-group">
+                                <label for="productName">Tên sản phẩm:</label>
+                                <input type="text" class="form-control" id="productName" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="productPrice">Giá tiền:</label>
+                                <input type="number" class="form-control" id="productPrice" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="productImage">URL hình ảnh:</label>
+                                <input type="text" class="form-control" id="productImage" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="productCategory">Danh mục:</label>
+                                <input type="text" class="form-control" id="productCategory" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="productDetails">Mô tả:</label>
+                                <textarea class="form-control" id="productDetails" rows="3" required></textarea>
+                            </div>
+                            <button type="submit" class="btn btn-primary">Thêm</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row" id="product-list">
+            <!-- Product Cards will be dynamically added here -->
+        </div>
+    </div>
+
+    <!-- Edit Product Modal -->
+    <div class="modal fade" id="editProductModal" tabindex="-1" aria-labelledby="editProductModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editProductModalLabel">Chỉnh Sửa Thông Tin Sản Phẩm</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form id="editProductForm">
+                        <div class="form-group">
+                            <label for="editProductName">Tên sản phẩm:</label>
+                            <input type="text" class="form-control" id="editProductName" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="editProductPrice">Giá tiền:</label>
+                            <input type="number" class="form-control" id="editProductPrice" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="editProductImage">URL hình ảnh:</label>
+                            <input type="text" class="form-control" id="editProductImage" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="editProductCategory">Danh mục:</label>
+                            <input type="text" class="form-control" id="editProductCategory" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="editProductDetails">Mô tả:</label>
+                            <textarea class="form-control" id="editProductDetails" rows="3" required></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Lưu</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="admin.js"></script> <!-- Include the admin.js file -->
+
+</body>
+
+</html>
