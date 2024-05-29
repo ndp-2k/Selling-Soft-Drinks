@@ -1,6 +1,6 @@
-document.getElementById('loginForm').addEventListener('submit', function(event) {
+document.getElementById('loginForm').addEventListener('submit', function (event) {
     event.preventDefault();
-    
+
     const phone = document.getElementById('phone').value;
     const password = document.getElementById('password').value;
 
@@ -8,14 +8,14 @@ document.getElementById('loginForm').addEventListener('submit', function(event) 
     const user = users.find(user => user.phone === phone);
 
     if (user && user.password === password) {
-        localStorage.setItem('logged', JSON.stringify({ phone: phone}));
+        localStorage.setItem('logged', JSON.stringify({ phone: phone }));
         window.location.href = 'product.html';
     } else {
         alert('Số điện thoại hoặc mật khẩu không đúng!');
     }
 });
 
-document.getElementById('registerForm').addEventListener('submit', function(event) {
+document.getElementById('registerForm').addEventListener('submit', function (event) {
     event.preventDefault();
 
     const phone = document.getElementById('reg-phone').value;
@@ -27,7 +27,7 @@ document.getElementById('registerForm').addEventListener('submit', function(even
     if (userExists) {
         alert('Số điện thoại đã tồn tại!');
     } else {
-        
+
         const role = (phone === '0355182218') ? 'admin' : 'customer';
         users.push({ phone: phone, password: password, role: role });
         localStorage.setItem('users', JSON.stringify(users));
@@ -36,7 +36,7 @@ document.getElementById('registerForm').addEventListener('submit', function(even
     }
 });
 
-document.addEventListener('click', function(event) {
+document.addEventListener('click', function (event) {
     if (event.target && event.target.id === 'toggleFormLink') {
         event.preventDefault();
         toggleForm();

@@ -8,6 +8,23 @@ function formatCurrency(amount) {
 document.addEventListener('DOMContentLoaded', () => {
     // Initialize an empty cart
     let cart = [];
+    // Lấy tham chiếu đến nút "Đăng xuất"
+    const logoutButton = document.querySelector('#logout');
+
+    // Bắt sự kiện click vào nút "Đăng xuất"
+    logoutButton.addEventListener('click', function () {
+        // Xóa thông tin người dùng đã đăng nhập khỏi Local Storage
+        localStorage.removeItem('logged');
+        // Chuyển hướng về trang index
+        window.location.href = 'index.html';
+    });
+    // Lấy tham chiếu đến nút "Đăng xuất"
+    const manager = document.querySelector('#adminPanel');
+
+    // Bắt sự kiện click vào nút "Đăng xuất"
+    manager.addEventListener('click', function () {
+        window.location.href = 'admin.html';
+    });
 
     // Get elements
     const cartContainer = document.querySelector('.cart-container');
@@ -83,7 +100,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
             $('#paymentFormModal').modal('show');
         } else {
-            alert('Cart is empty!');
+            alert('Hãy thêm vào giỏ hàng');
         }
     });
 
@@ -126,18 +143,44 @@ document.addEventListener('DOMContentLoaded', () => {
         console.log("Không tìm thấy sản phẩm mặc định trong Local Storage.");
         defaultProducts = [
             {
-                id:0,
-                name: "Product 1",
-                price: 10000,
-                image: "product1.jpg",
-                category: "Món Nổi Bật"
+                id: 0,
+                name: "Trà sữa trân trâu đường đen",
+                price: 6996,
+                image: "https://cdn.24h.com.vn/upload/3-2021/images/2021-08-24/ky-duyen--1--1629811319-907-width650height812.jpg",
+                category: "Trà sữa",
+                details: "ngọt nước"
             },
             {
-                id:1,
-                name: "Product 2",
-                price: 20000,
-                image: "product2.jpg",
-                category: "Instant Milk Tea"
+                id: 1,
+                name: "Trà thái bí đỏ",
+                price: 123,
+                image: "https://cdn.24h.com.vn/upload/3-2021/images/2021-08-24/ky-duyen--1--1629811319-907-width650height812.jpg",
+                category: "Trà thái",
+                details: "ngọt nước"
+            },
+            {
+                id: 3,
+                name: "Kem dừa",
+                price: 3214,
+                image: "https://cdn.24h.com.vn/upload/3-2021/images/2021-08-24/ky-duyen--1--1629811319-907-width650height812.jpg",
+                category: "Kem",
+                details: "ngọt nước"
+            },
+            {
+                id: 3,
+                name: "Sinh tố bơ",
+                price: 56456,
+                image: "https://cdn.24h.com.vn/upload/3-2021/images/2021-08-24/ky-duyen--1--1629811319-907-width650height812.jpg",
+                category: "Sinh tố",
+                details: "ngọt nước"
+            },
+            {
+                id: 4,
+                name: "Xoài",
+                price: 12321,
+                image: "https://cdn.24h.com.vn/upload/3-2021/images/2021-08-24/ky-duyen--1--1629811319-907-width650height812.jpg",
+                category: "Hoa quả",
+                details: "ngọt nước"
             },
         ];
         // Set the default products in Local Storage
@@ -145,7 +188,7 @@ document.addEventListener('DOMContentLoaded', () => {
         // Display default products
         displayProducts(defaultProducts);
     }
- 
+
     // Function to display products
     function displayProducts(products) {
         const productListContainer = document.getElementById('product-list');
@@ -154,23 +197,38 @@ document.addEventListener('DOMContentLoaded', () => {
         const productsContainer = document.createElement('div');
         productsContainer.classList.add('row');
 
+        // Xác định lớp cho container sản phẩm dựa trên số lượng sản phẩm
+        if (products.length <= 1) {
+            productsContainer.classList.add('col-md-12');
+        } else {
+            productsContainer.classList.add('col-md-12');
+        }
+
         products.forEach(product => {
             const productCard = document.createElement('div');
             productCard.classList.add('col-md-6', 'mb-4');
             productCard.innerHTML = `
             <div class="card product-card">
-                <img src="${product.image}" class="card-img-top" alt="Product Image">
-                <div class="card-body text-center">
-                    <h5 class="card-title product-name">${product.name}</h5>
-                    <p class="card-text product-price">${formatCurrency(product.price)}</p>
-                    <select class="form-select product-size">
-                        <option value="M">M</option>
-                        <option value="L">L</option>
-                    </select>
-                    <button class="btn btn-primary add-to-cart">Thêm vào giỏ</button>
+            <img src="${product.image}" class="card-img-top" alt="Product Image">
+            
+            <div class="card-body text-center">
+            <h5 class="card-title product-name">${product.name}</h5>
+            <h5 style="display: none;" class=" product-id">${product.id}</h5>
+                <p class="card-text product-price">${formatCurrency(product.price)}</p>
+                <div class="row">
+                    <div class="col-md-12">
+                        <select class="form-select product-size">
+                            <option value="M">Size M</option>
+                            <option value="L">Size L</option>
+                        </select>
+                    </div>
                 </div>
+                <button class="btn btn-primary add-to-cart" style="width: 150px;">Thêm vào giỏ</button>
+    
+                <button class="btn btn-primary btn-details" style="width: 80px;">Chi tiết</button>
             </div>
-        `;
+        </div>
+                    `;
             productsContainer.appendChild(productCard);
         });
 
@@ -195,7 +253,18 @@ document.addEventListener('DOMContentLoaded', () => {
                 addToCart(product);
             });
         });
+
+        // Add event listeners to "Details" buttons
+        document.querySelectorAll('.btn-details').forEach(button => {
+            button.addEventListener('click', (e) => {
+                const productCard = e.target.closest('.product-card');
+                const productId= productCard.querySelector('.product-id').textContent;
+                // Tại đây, bạn có thể lấy thông tin sản phẩm để chuyển hướng sang trang chi tiết sản phẩm
+                window.location.href = `product_detail.html?product=${encodeURIComponent(productId)}`;
+            });
+        });
     }
+
 
     // Lắng nghe sự kiện khi chọn một mục trong danh mục
     document.querySelectorAll('.list-group-item').forEach(item => {
@@ -206,22 +275,6 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    // Hàm hiển thị danh sách sản phẩm đã được sắp xếp
-    function displaySortedProducts(sortedProductList) {
-        const productListContainer = document.getElementById('product-list');
-        if (!productListContainer) {
-            console.error("Không tìm thấy phần tử có id 'product-list' trong DOM.");
-            return;
-        }
-
-        // Xóa tất cả các sản phẩm hiện có
-        productListContainer.innerHTML = '';
-
-        // Thêm lại các sản phẩm đã được sắp xếp
-        sortedProductList.forEach(productCard => {
-            productListContainer.appendChild(productCard);
-        });
-    }
 
     sortOption.addEventListener('change', () => {
         const sortValue = sortOption.value;
@@ -243,4 +296,21 @@ document.addEventListener('DOMContentLoaded', () => {
                 return defaultProducts;
         }
     }
+
+    // Lấy tham chiếu đến nút tìm kiếm
+    const searchButton = document.getElementById('searchBtn');
+
+    // Bắt sự kiện click vào nút tìm kiếm
+    searchButton.addEventListener('click', function () {
+        // Lấy giá trị từ ô nhập tìm kiếm
+        const searchQuery = document.querySelector('.form-control').value.toLowerCase();
+
+        // Lọc sản phẩm dựa trên từ khóa tìm kiếm
+        const filteredProducts = defaultProducts.filter(product => {
+            return product.name.toLowerCase().includes(searchQuery) || product.details.toLowerCase().includes(searchQuery);
+        });
+
+        // Hiển thị sản phẩm đã lọc
+        displayProducts(filteredProducts);
+    });
 });

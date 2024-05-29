@@ -2,6 +2,12 @@ body {
     background-color: #f8f9fa;
 }
 
+.container-fluid {
+    background-image: url('https://hthaostudio.com/wp-content/uploads/2021/06/Anh-sexy-dep-1.jpg.webp'); 
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
 header {
     box-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }

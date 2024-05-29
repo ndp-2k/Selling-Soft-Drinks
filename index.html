@@ -15,7 +15,7 @@
             <div class="col-12 text-center mb-4">
             </div>
             <div class="col-md-6 col-lg-4">
-                <div class="card bg-dark text-white border-0">
+                <div class="card text-white border-0" style="background-color: rgba(55, 55, 55, 0.378);">
                     <div class="card-body p-5">
                         <h4 class="card-title text-center mb-4" id="form-title">Đăng nhập</h4>
                         <form id="loginForm">
@@ -62,7 +62,14 @@
             </div>
         </div>
     </div>
-
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const loggedUser = JSON.parse(localStorage.getItem('logged'));
+            if (loggedUser) {
+                window.location.href = 'product.html';
+            }
+        });
+    </script>
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>

@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>TocoToco Tea Order</title>
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="admin.css">
 </head>
 
 <body>
@@ -16,11 +16,10 @@
                 <a href="#" class="navbar-brand">
                     <img src="logo.png" alt="TocoToco Tea" height="50">
                 </a>
-                <ul class="navbar-nav ml-auto"> <!-- Corrected class name here -->
-                    <li class="nav-item">
-                        <a class="nav-link" href="index.html">Home</a>
-                    </li>
-                </ul>
+                <h1 id="searchBtn" class="">Quản lý sản phẩm</h1>
+
+                <button  id="home"  class="btn btn-outline-success my-2 my-sm-0" type="submit">Home</button>
+    
             </div>
         </div>
     </header>
@@ -102,11 +101,30 @@
             </div>
         </div>
     </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const loggedUser = JSON.parse(localStorage.getItem('logged'));
+            const users = JSON.parse(localStorage.getItem('users'));
+            
+            if (!loggedUser) {
+                // Nếu không có người dùng đã đăng nhập, chuyển hướng về trang index
+                window.location.href = 'index.html';
+            } else {
+                // Kiểm tra quyền hạn của người dùng
+                const isAdmin = users.find(user => user.phone === loggedUser.phone && user.role === 'admin');
+                if (!isAdmin) {
+                    // Nếu là admin, hiển thị nút "Manage Products"
+                    window.location.href = 'product.html';
+                }
+            }
+        });
+    </script>
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <script src="admin.js"></script> <!-- Include the admin.js file -->
-
+    <script src="home.js"></script>
 </body>
 
 </html>

@@ -6,8 +6,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>TocoToco Tea Order</title>
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="product.css">
+
 </head>
 
 <body>
@@ -18,10 +18,10 @@
                     <img src="logo.png" alt="TocoToco Tea" height="50">
                 </a>
                 <input type="text" class="form-control w-50" placeholder="Tìm kiếm sản phẩm...">
-
-                <li class="nav-item" id="adminPanel" style="display: none;">
-                    <a class="nav-link" href="admin.html">Manage Products</a>
-                </li>
+                <button id="searchBtn" class="btn btn-outline-primary">Tìm kiếm</button>
+                <button style="display: none;" class="btn btn-outline-success my-2 my-sm-0" id="adminPanel"
+                    type="submit"> Quản lý sản phẩm</button>
+                <button id="logout" class="btn btn-outline-success my-2 my-sm-0" type="submit">Đăng xuất</button>
             </div>
             <ul class="navbar-nav ml-auto">
 
@@ -32,7 +32,7 @@
         document.addEventListener('DOMContentLoaded', function () {
             const loggedUser = JSON.parse(localStorage.getItem('logged'));
             const users = JSON.parse(localStorage.getItem('users'));
-            
+
             if (!loggedUser) {
                 // Nếu không có người dùng đã đăng nhập, chuyển hướng về trang index
                 window.location.href = 'index.html';
@@ -50,6 +50,7 @@
         <div class="row">
             <aside class="col-md-3">
                 <div class="col-md-6 text-center">
+
                     <label for="sort-option">Sắp xếp: </label>
                     <select id="sort-option" class="form-select">
                         <option value="price-asc">Theo giá (tăng dần)</option>
@@ -61,14 +62,11 @@
                 <div class="bg-light p-3 rounded">
                     <h4>Danh mục</h4>
                     <ul class="list-group list-group-flush">
-                        <li class="list-group-item">Món Nổi Bật</li>
-                        <li class="list-group-item">Instant Milk Tea</li>
-                        <li class="list-group-item">Trà Sữa</li>
-                        <li class="list-group-item">Fresh Fruit Tea</li>
-                        <li class="list-group-item">Macchiato Cream Cheese</li>
-                        <li class="list-group-item">Cà Phê</li>
-                        <li class="list-group-item">Ice Cream</li>
-                        <li class="list-group-item">Special Menu</li>
+                        <li class="list-group-item">Trà sữa</li>
+                        <li class="list-group-item">Trà thái</li>
+                        <li class="list-group-item">Kem</li>
+                        <li class="list-group-item">Sinh tố</li>
+                        <li class="list-group-item">Hoa quả</li>
                     </ul>
                 </div>
             </aside>
