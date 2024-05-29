@@ -1,4 +1,3 @@
-
 function formatCurrency(amount) {
     return amount.toLocaleString('vi-VN', {
         style: 'currency',
@@ -10,7 +9,6 @@ document.addEventListener('DOMContentLoaded', () => {
     // Initialize an empty cart
     let cart = [];
 
-
     // Get elements
     const cartContainer = document.querySelector('.cart-container');
     const cartItems = document.querySelector('.cart-items');
@@ -18,10 +16,12 @@ document.addEventListener('DOMContentLoaded', () => {
     const clearCartBtn = document.querySelector('.clear-cart');
     const checkoutBtn = document.querySelector('.checkout');
     const sortOption = document.getElementById('sort-option');
+    const paymentFormModal = document.getElementById('paymentFormModal');
+    const paymentForm = document.getElementById('payment-form');
 
     // Function to add product to cart
     function addToCart(product) {
-        const existingProduct = cart.find(item => item.name === product.name);
+        const existingProduct = cart.find(item => item.name === product.name && item.size === product.size);
         if (existingProduct) {
             existingProduct.quantity += 1;
         } else {
@@ -34,36 +34,36 @@ document.addEventListener('DOMContentLoaded', () => {
     function updateCartDisplay() {
         // Clear the current cart items display
         cartItems.innerHTML = '';
-
         // Update cart items
         cart.forEach(product => {
             const item = document.createElement('div');
             item.classList.add('cart-item');
             item.innerHTML = `
-                <span>${product.name}</span>
+                <span>${product.name} (${product.size})</span>
                 <span>${product.quantity} x ${formatCurrency(product.price)}</span>
-                <span>${formatCurrency(product.quantity * product.price)}</span>
-                <button class="remove-item" data-product-name="${product.name}">X</button>
+                <span>${formatCurrency(product.quantity * product.price.replace(/[^0-9]/g, ""))}</span>
+                <button class="remove-item" data-product-name="${product.name}" data-product-size="${product.size}">X</button>
             `;
             cartItems.appendChild(item);
         });
 
         // Update total price
-        const totalPrice = cart.reduce((total, product) => total + product.price * product.quantity, 0);
+        const totalPrice = cart.reduce((total, product) => total + product.price.replace(/[^0-9]/g, "") * product.quantity, 0);
         cartTotal.textContent = formatCurrency(totalPrice);
 
         // Add event listeners to remove buttons
         document.querySelectorAll('.remove-item').forEach(button => {
             button.addEventListener('click', (e) => {
                 const productName = e.target.getAttribute('data-product-name');
-                removeFromCart(productName);
+                const productSize = e.target.getAttribute('data-product-size');
+                removeFromCart(productName, productSize);
             });
         });
     }
 
     // Function to remove product from cart
-    function removeFromCart(productName) {
-        cart = cart.filter(product => product.name !== productName);
+    function removeFromCart(productName, productSize) {
+        cart = cart.filter(product => product.name !== productName || product.size !== productSize);
         updateCartDisplay();
     }
 
@@ -73,14 +73,46 @@ document.addEventListener('DOMContentLoaded', () => {
         updateCartDisplay();
     });
 
-    // Function to handle checkout (redirect to checkout page or process checkout)
+    // Function to handle checkout (display form)
     checkoutBtn.addEventListener('click', () => {
         if (cart.length > 0) {
-            alert('Proceeding to checkout...');
-            // Redirect to checkout page or handle checkout logic
+            // Lấy số điện thoại từ localStorage và điền vào form
+            const customerPhone = localStorage.getItem('customerPhone');
+            if (customerPhone) {
+                document.getElementById('customer-phone').value = customerPhone;
+            }
+            $('#paymentFormModal').modal('show');
         } else {
             alert('Cart is empty!');
         }
+    });
+
+    // Handle form submission
+    paymentForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const customerName = document.getElementById('customer-name').value;
+        const customerPhone = document.getElementById('customer-phone').value;
+        const customerAddress = document.getElementById('customer-address').value;
+        const customerNote = document.getElementById('customer-note').value;
+
+        // Lưu số điện thoại vào localStorage
+        localStorage.setItem('customerPhone', customerPhone);
+
+        // Handle the payment logic here (e.g., send data to server)
+        console.log('Customer Name:', customerName);
+        console.log('Customer Phone:', customerPhone);
+        console.log('Customer Address:', customerAddress);
+        console.log('Customer Note:', customerNote);
+        console.log('Cart Items:', cart);
+
+        // Clear the cart after successful checkout
+        cart = [];
+        updateCartDisplay();
+
+        // Hide the modal
+        $('#paymentFormModal').modal('hide');
+
+        alert('Thank you for your purchase!');
     });
 
     // Load default products from Local Storage
@@ -94,28 +126,28 @@ document.addEventListener('DOMContentLoaded', () => {
         console.log("Không tìm thấy sản phẩm mặc định trong Local Storage.");
         defaultProducts = [
             {
+                id:0,
                 name: "Product 1",
                 price: 10000,
                 image: "product1.jpg",
-                category: "Món Nổi Bật" // Thêm thông tin hạng mục cho mỗi sản phẩm
+                category: "Món Nổi Bật"
             },
             {
+                id:1,
                 name: "Product 2",
                 price: 20000,
                 image: "product2.jpg",
                 category: "Instant Milk Tea"
             },
-            // Thêm thông tin hạng mục cho các sản phẩm khác
         ];
         // Set the default products in Local Storage
         localStorage.setItem('products', JSON.stringify(defaultProducts));
         // Display default products
         displayProducts(defaultProducts);
     }
-
+ 
     // Function to display products
     function displayProducts(products) {
-        const main = document.querySelector('main');
         const productListContainer = document.getElementById('product-list');
 
         // Tạo phần tử div chứa sản phẩm
@@ -131,6 +163,10 @@ document.addEventListener('DOMContentLoaded', () => {
                 <div class="card-body text-center">
                     <h5 class="card-title product-name">${product.name}</h5>
                     <p class="card-text product-price">${formatCurrency(product.price)}</p>
+                    <select class="form-select product-size">
+                        <option value="M">M</option>
+                        <option value="L">L</option>
+                    </select>
                     <button class="btn btn-primary add-to-cart">Thêm vào giỏ</button>
                 </div>
             </div>
@@ -148,10 +184,12 @@ document.addEventListener('DOMContentLoaded', () => {
                 const productCard = e.target.closest('.product-card');
                 const productPriceElement = productCard.querySelector('.product-price');
                 const productName = productCard.querySelector('.product-name').textContent;
+                const productSize = productCard.querySelector('.product-size').value;
                 const productPrice = productPriceElement.textContent.replace(/₫|,/g, '').trim();
                 const product = {
                     name: productName,
                     price: productPrice,
+                    size: productSize,
                     quantity: 1
                 };
                 addToCart(product);
@@ -159,24 +197,21 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-
     // Lắng nghe sự kiện khi chọn một mục trong danh mục
     document.querySelectorAll('.list-group-item').forEach(item => {
         item.addEventListener('click', (e) => {
-            const selectedCategory = e.target.textContent; // Lấy tên của hạng mục được chọn
-            const filteredProducts = defaultProducts.filter(product => product.category === selectedCategory); // Lọc danh sách sản phẩm theo hạng mục được chọn
-            displayProducts(filteredProducts); // Hiển thị chỉ các sản phẩm thuộc về hạng mục được chọn
+            const selectedCategory = e.target.textContent;
+            const filteredProducts = defaultProducts.filter(product => product.category === selectedCategory);
+            displayProducts(filteredProducts);
         });
     });
 
-
     // Hàm hiển thị danh sách sản phẩm đã được sắp xếp
     function displaySortedProducts(sortedProductList) {
-        // Kiểm tra xem phần tử có id "product-list" đã tồn tại hay chưa
         const productListContainer = document.getElementById('product-list');
         if (!productListContainer) {
             console.error("Không tìm thấy phần tử có id 'product-list' trong DOM.");
-            return; // Thoát khỏi hàm nếu phần tử không tồn tại
+            return;
         }
 
         // Xóa tất cả các sản phẩm hiện có
@@ -186,7 +221,6 @@ document.addEventListener('DOMContentLoaded', () => {
         sortedProductList.forEach(productCard => {
             productListContainer.appendChild(productCard);
         });
-
     }
 
     sortOption.addEventListener('change', () => {
@@ -194,6 +228,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const sortedProducts = sortProducts(sortValue);
         displayProducts(sortedProducts);
     });
+
     function sortProducts(sortValue) {
         switch (sortValue) {
             case 'price-asc':
@@ -208,5 +243,4 @@ document.addEventListener('DOMContentLoaded', () => {
                 return defaultProducts;
         }
     }
-
 });

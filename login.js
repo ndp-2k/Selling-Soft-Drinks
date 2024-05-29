@@ -4,9 +4,11 @@ document.getElementById('loginForm').addEventListener('submit', function(event) 
     const phone = document.getElementById('phone').value;
     const password = document.getElementById('password').value;
 
-    // Here you need to check if the phone and password match the stored data
-    const userData = JSON.parse(localStorage.getItem(phone));
-    if (userData && userData.password === password) {
+    const users = JSON.parse(localStorage.getItem('users')) || [];
+    const user = users.find(user => user.phone === phone);
+
+    if (user && user.password === password) {
+        localStorage.setItem('logged', JSON.stringify({ phone: phone}));
         window.location.href = 'product.html';
     } else {
         alert('Số điện thoại hoặc mật khẩu không đúng!');
@@ -19,10 +21,16 @@ document.getElementById('registerForm').addEventListener('submit', function(even
     const phone = document.getElementById('reg-phone').value;
     const password = document.getElementById('reg-password').value;
 
-    if (localStorage.getItem(phone)) {
+    const users = JSON.parse(localStorage.getItem('users')) || [];
+    const userExists = users.some(user => user.phone === phone);
+
+    if (userExists) {
         alert('Số điện thoại đã tồn tại!');
     } else {
-        localStorage.setItem(phone, JSON.stringify({ password: password }));
+        
+        const role = (phone === '0355182218') ? 'admin' : 'customer';
+        users.push({ phone: phone, password: password, role: role });
+        localStorage.setItem('users', JSON.stringify(users));
         alert('Đăng ký thành công!');
         toggleForm();
     }
